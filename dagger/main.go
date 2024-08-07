@@ -28,9 +28,16 @@ func (m *Leadyspleen) ContainerEcho(stringArg string) *dagger.Container {
 
 func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Directory, pattern string) (string, error) {
 	return dag.Container().
-		From("pandoc/core:latest").
+		From("pandoc/core:3.2.1").
 		WithMountedDirectory("/mnt", directoryArg).
 		WithWorkdir("/mnt").
-		WithExec([]string{"grep", "-R", pattern, "."}).
+		WithExec([]string{"pandoc", "-v"}).
+		Stdout(ctx)
+}
+
+func (m *Leadyspleen) PandocVersion(ctx context.Context) (string, error) {
+	return dag.Container().
+		From("pandoc/core:3.2.1").
+		WithExec([]string{"pandoc", "-v"}).
 		Stdout(ctx)
 }
