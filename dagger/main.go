@@ -26,6 +26,15 @@ func (m *Leadyspleen) ContainerEcho(stringArg string) *dagger.Container {
 	return dag.Container().From("alpine:latest").WithExec([]string{"echo", stringArg})
 }
 
+func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Directory, pattern string) (string, error) {
+	return dag.Container().
+		From("pandoc:latest").
+		WithMountedDirectory("/mnt", directoryArg).
+		WithWorkdir("/mnt").
+		WithExec([]string{"grep", "-R", pattern, "."}).
+		Stdout(ctx)
+}
+
 // Returns lines that match a pattern in the files of the provided Directory
 func (m *Leadyspleen) GrepDir(ctx context.Context, directoryArg *dagger.Directory, pattern string) (string, error) {
 	return dag.Container().
