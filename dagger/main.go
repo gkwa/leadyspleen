@@ -26,12 +26,12 @@ func (m *Leadyspleen) ContainerEcho(stringArg string) *dagger.Container {
 	return dag.Container().From("alpine:latest").WithExec([]string{"echo", stringArg})
 }
 
-func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Directory, pattern string) (string, error) {
+func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Directory) (string, error) {
 	return dag.Container().
 		From("pandoc/core:3.2.1").
 		WithMountedDirectory("/mnt", directoryArg).
 		WithWorkdir("/mnt").
-		WithExec([]string{"pandoc", "-v"}).
+		WithExec([]string{"pandoc", "-t", "native", "test.md"}).
 		Stdout(ctx)
 }
 
