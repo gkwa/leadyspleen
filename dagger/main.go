@@ -34,12 +34,3 @@ func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Direct
 		WithExec([]string{"grep", "-R", pattern, "."}).
 		Stdout(ctx)
 }
-
-func (m *Leadyspleen) GrepDir(ctx context.Context, directoryArg *dagger.Directory, pattern string) (string, error) {
-	return dag.Container().
-		From("alpine:latest").
-		WithMountedDirectory("/mnt", directoryArg).
-		WithWorkdir("/mnt").
-		WithExec([]string{"grep", "-R", pattern, "."}).
-		Stdout(ctx)
-}
