@@ -2,24 +2,31 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"dagger/leadyspleen/internal/dagger"
 )
 
 type Leadyspleen struct{}
 
-func (m *Leadyspleen) PandocRun(ctx context.Context, directoryArg *dagger.Directory) (string, error) {
+func getImageName(pandocVersion string) string {
+	return fmt.Sprintf("pandoc/core:%s", pandocVersion)
+}
+
+func (m *Leadyspleen) PandocRun(ctx context.Context, pandocVersion string, directoryArg *dagger.Directory) (string, error) {
+	image := getImageName(pandocVersion)
 	return dag.Container().
-		From("pandoc/core:3.2.1").
+		From(image).
 		WithMountedDirectory("/mnt", directoryArg).
 		WithWorkdir("/mnt").
-		WithExec([]string{"pandoc", "-t", "native", "test.md"}).
+		WithExec([]string{"pandoc", "--to", "native", "test.md"}).
 		Stdout(ctx)
 }
 
-func (m *Leadyspleen) PandocVersion(ctx context.Context) (string, error) {
+func (m *Leadyspleen) PandocVersion(ctx context.Context, pandocVersion string) (string, error) {
+	image := getImageName(pandocVersion)
 	return dag.Container().
-		From("pandoc/core:3.2.1").
+		From(image).
 		WithExec([]string{"pandoc", "-v"}).
 		Stdout(ctx)
 }
