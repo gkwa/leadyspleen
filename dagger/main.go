@@ -15,6 +15,7 @@ func (m *Leadyspleen) PandocRun(
 	pandocVersion string,
 ) (string, error) {
 	pv := NewPandocVersion(pandocVersion)
+
 	return dag.Container().
 		From(pv.ImageName()).
 		WithMountedDirectory("/mnt", directoryArg).
