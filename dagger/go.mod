@@ -5,7 +5,7 @@ go 1.22.5
 require (
 	github.com/99designs/gqlgen v0.17.63
 	github.com/Khan/genqlient v0.7.0
-	github.com/vektah/gqlparser/v2 v2.5.21
+	github.com/vektah/gqlparser/v2 v2.5.22
 	go.opentelemetry.io/otel v1.34.0
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc v0.10.0
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp v0.10.0
